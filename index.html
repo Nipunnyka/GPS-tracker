@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+
+
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<!--<input type="text" name="ip">-->
+        <!--<input type="checkbox"-->
+
+        <!--name="shouldConnect"/>-->
+           <!--Listen to coordinates? </label>-->
+<div id="map"></div>
+<script>
+
+    window.specialPoints = [];
+
+
+    var map;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 28.611691, lng: 77.034347},
+            zoom: 16
+        });
+        var numPoints = window.prompt("Enter Number of Special Points(set of way points for rover trajectory)");
+        for (var i = 1; i <= numPoints; i++) {
+            var pointi = window.prompt(`Enter Lat, Lon, Title of ${i}th point (ex - 28.611691 77.034347 startPos)`);
+            var coords = pointi.split(" ");
+            console.log(coords);
+            window.specialPoints.push(coords);
+            new google.maps.Marker({
+                position: {lat: parseFloat(coords[0]), lng:  parseFloat(coords[1])},
+                map: map,
+                title: coords[2],
+                icon: {
+                  url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                }
+            });
+        }
+        var roverPositions = [];
+        var roverPositionsPath = new google.maps.Polyline({
+            path: roverPositions,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        for (i = 0; i < roverPositions.length; i++) {
+            var marker = new google.maps.Marker({
+                position: roverPositions[i],
+                map: map
+            });
+        }
+        //
+        roverPositionsPath.setMap(map);
+
+        var arr = [];
+        window.count = -1;
+        var ip = window.prompt("Enter IP address of gps transmitter");
+        var socket = new WebSocket(`ws://${ip}:8765`);
+        socket.onmessage = function (event) {
+                count++;
+            // var coordinates = arr[count];
+            // roverPositionsPath.setMap(map);
+            // event.data.split()
+            roverLat = parseFloat(event.data.split(" ")[0])
+            roverLon = parseFloat(event.data.split(" ")[1])
+            console.log(roverLat, roverLon);
+            new google.maps.Marker({
+                position: {
+                    lat: roverLat,
+                    lng: roverLon
+                },
+                map: map
+            });
+
+            var path = roverPositionsPath.getPath()
+            // console.log(path);
+            path.push(new google.maps.LatLng(roverLat, roverLon));
+            roverPositionsPath.setPath(path);
+            };
+
+    }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9ll5uTMMdp4u2ihuKu2EWnwFlZrwUvOk&callback=initMap"
+        async defer></script>
+</body>
+</html>
