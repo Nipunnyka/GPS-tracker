@@ -2,9 +2,9 @@
  This application plots the live path of a rover fitted GPS tracker through Arduino on a GMaps API. Developed so that we can ensure the rover is following a certain trajectory in autonomous navigation task at IRC.
 The following are the characterstics of this project:
 * Server-Client Architecture
- ** Arduino scripts (in C++) to send properly formatted location coordinates of the rover
- ** WebSocket to connect to Arduino (written in Python) and fetch current latitude and longitude of rover which also continuosly listens for connections
- ** Client side webapp which connects to a ip and initiates websocket asking for live location and plots it in real time 
+  * Arduino scripts (in C++) to send properly formatted location coordinates of the rover
+  * WebSocket to connect to Arduino (written in Python) and fetch current latitude and longitude of rover which also continuosly listens for connections
+  * Client side webapp which connects to a ip and initiates websocket asking for live location and plots it in real time.
 Note: API key is outdated now. The following caveats have to be followed:
 * Rover should have a static IP address
 * Special points are set of way points through which the rover has to traverse
