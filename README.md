@@ -21,5 +21,4 @@ python3 websocket-trial.py
 
 
 The following is an image of the application, the rover is in storage and there is no way t obtain a working screenshot now, meanwhile please make do with a connectionless front-end:
-<ADD IMAGE>
-
+![image of the web-app](/images/ss.png)
